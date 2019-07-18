@@ -4,6 +4,7 @@ var express = require("express");
 // =============================================================
 var app = express();
 var PORT = process.env.PORT || 8080;
+var allRoutes = require('./controllers');
 
 // Requiring our models for syncing
 var db = require("./models");
@@ -21,11 +22,7 @@ app.engine("handlebars", exphbs({ defaultLayout: "main" }));
 app.set("view engine", "handlebars");
 
 
-app.get('/',(req,res)=>{
-    db.Host.findAll({}).then(hosts=>{
-        res.render('index',{hosts})
-    })
-})
+app.use('/',allRoutes);
 
 
 db.sequelize.sync({ force: true }).then(function() {
