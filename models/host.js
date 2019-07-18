@@ -4,13 +4,11 @@ module.exports = function(sequelize, DataTypes) {
       name: DataTypes.STRING
     });
   
-    // Host.associate = function(models) {
+    Host.associate = function(models) {
     //   // Associating Host with Posts
     //   // When an Host is deleted, also delete any associated Posts
-    //   Host.hasMany(models.Post, {
-    //     onDelete: "cascade"
-    //   });
-    // };
+      Host.hasMany(models.BlogPost);
+    };
   
     return Host;
   };
