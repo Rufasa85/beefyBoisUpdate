@@ -1,0 +1,23 @@
+var express = require('express');
+var router = express.Router();
+const db = require('../models')
+const bcrypt = require('bcrypt');
+
+router.get('/',(req,res)=>{
+    res.render('login');
+})
+
+router.post('/login',(req,res)=>{
+    db.Host.findOne({where:{name:req.body.name}}).then(dbUser=>{
+        let loggedIn = bcrypt.compareSync(req.body.password,dbUser.password);
+        if(loggedIn) {
+            req.session.user = dbUser
+        }
+        else {
+            req.session.error = 'auth failed bro'
+        }
+        res.send(req.session);
+    })
+})
+
+module.exports = router;

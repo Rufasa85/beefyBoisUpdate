@@ -1,4 +1,5 @@
 var express = require("express");
+var session = require("express-session");
 
 // Sets up the Express App
 // =============================================================
@@ -20,13 +21,15 @@ var exphbs = require("express-handlebars");
 
 app.engine("handlebars", exphbs({ defaultLayout: "main" }));
 app.set("view engine", "handlebars");
+app.use(session({ secret: "keyboard cat", resave: true, saveUninitialized: true }));
 
 
 app.use('/',allRoutes);
 
 
-db.sequelize.sync({ force: true }).then(function() {
+db.sequelize.sync({ force: false }).then(function() {
     app.listen(PORT, function() {
       console.log("App listening on PORT " + PORT);
     });
   });
+
