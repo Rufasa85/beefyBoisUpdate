@@ -25,4 +25,48 @@ router.post('/',(req,res)=>{
     }
 })
 
+router.get('/:id',(req,res)=>{
+    db.BlogPost.findOne({where:{id:req.params.id}}).then(post=>{
+        res.send(post)
+    })
+})
+
+router.put('/:id',(req,res)=>{
+    if(!req.session.user){
+        res.redirect('/')
+    }
+    else{
+        db.BlogPost.findOne({where:{id:req.params.id}}).then(post=>{
+            if(req.session.user && req.session.user.id === post.HostId) {
+                db.BlogPost.update({
+                    title:req.body.title,
+                    body:req.body.body
+                },
+                {where:{id:req.params.id}}
+                ).then(updateResult=>{
+                    res.send(updateResult);
+                })
+            }
+        })
+    }
+})
+
+router.delete('/:id',(req,res)=>{
+    if(!req.session.user){
+        res.redirect('/')
+    }
+    else{
+        db.BlogPost.findOne({where:{id:req.params.id}}).then(post=>{
+            if(req.session.user && req.session.user.id === post.HostId) {
+                db.BlogPost.destroy({where:{id:req.params.id}}).then(deletedResult=>{
+                    res.json(deletedResult);
+                })
+            }
+            else {
+                res.json('unauhtorized, not your blogPost')
+            }
+        })
+    }
+})
+
 module.exports = router;
