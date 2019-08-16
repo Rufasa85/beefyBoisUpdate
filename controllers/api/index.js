@@ -1,8 +1,10 @@
-var express = require('express');
-var router = express.Router();
-var hostAPIRoutes = require('./hostsApiController');
+const express = require('express');
+const router = express.Router();
+const hostAPIRoutes = require('./hostsApiController');
+const blogAPIRoutes = require('./blogPostsApiController');
 
-router.use('/hosts',hostAPIRoutes)
+router.use('/hosts',hostAPIRoutes);
+router.use('/blogPosts',blogAPIRoutes);
 
 router.get('/',(req,res)=>{
     res.send("index API route, MOAR testing")

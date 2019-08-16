@@ -14,6 +14,7 @@ router.post('/login',(req,res)=>{
             req.session.user = dbUser
         }
         else {
+            req.session.user= false;
             req.session.error = 'auth failed bro'
         }
         res.send(req.session);
