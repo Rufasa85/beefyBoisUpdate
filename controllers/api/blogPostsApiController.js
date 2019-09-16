@@ -47,6 +47,9 @@ router.put('/:id',(req,res)=>{
                     res.send(updateResult);
                 })
             }
+            else {
+                res.status("401").json("Unauthorized: Not your post")
+            }
         })
     }
 })
