@@ -1,7 +1,8 @@
 module.exports = function(sequelize, DataTypes) {
     var BlogPost = sequelize.define("BlogPost", {
       // Giving the BlogPost model a name of type STRING
-      name: DataTypes.STRING
+      title: DataTypes.STRING,
+      body: DataTypes.TEXT
     });
   
     BlogPost.associate = function(models) {

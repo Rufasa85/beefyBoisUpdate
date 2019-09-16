@@ -3,7 +3,7 @@ var router = express.Router();
 const db  = require('../../models');
 
 router.get('/',(req,res)=>{
-    db.BlogPost.findAll({}).then(blogPosts=>{
+    db.BlogPost.findAll({include:[db.Host]}).then(blogPosts=>{
         res.json(blogPosts);
     })
 });
@@ -21,6 +21,53 @@ router.post('/',(req,res)=>{
           HostId:req.session.user.id 
         }).then(newBlogPost=>{
             res.json(newBlogPost)
+        })
+    }
+})
+
+router.get('/:id',(req,res)=>{
+    db.BlogPost.findOne({where:{id:req.params.id}}).then(post=>{
+        res.send(post)
+    })
+})
+
+router.put('/:id',(req,res)=>{
+    if(!req.session.user){
+        res.redirect('/')
+    }
+    else{
+        db.BlogPost.findOne({where:{id:req.params.id}}).then(post=>{
+            if(req.session.user && req.session.user.id === post.HostId) {
+                db.BlogPost.update({
+                    title:req.body.title,
+                    body:req.body.body
+                },
+                {where:{id:req.params.id}}
+                ).then(updateResult=>{
+                    res.send(updateResult);
+                })
+            }
+            else {
+                res.status("401").json("Unauthorized: Not your post")
+            }
+        })
+    }
+})
+
+router.delete('/:id',(req,res)=>{
+    if(!req.session.user){
+        res.redirect('/')
+    }
+    else{
+        db.BlogPost.findOne({where:{id:req.params.id}}).then(post=>{
+            if(req.session.user && req.session.user.id === post.HostId) {
+                db.BlogPost.destroy({where:{id:req.params.id}}).then(deletedResult=>{
+                    res.json(deletedResult);
+                })
+            }
+            else {
+                res.json('unauhtorized, not your blogPost')
+            }
         })
     }
 })
