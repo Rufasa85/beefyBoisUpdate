@@ -20,7 +20,10 @@ router.post('/',(req,res)=>{
           description:req.body.description,
           number:req.body.number
         }).then(newEpisode=>{
-            newEpisode.addHost(req.session.user.id);
+            let hosts = req.body.hosts.split(",");
+            hosts.forEach(hostId=>{
+                newEpisode.addHost(hostId)
+            })
             res.json(newEpisode);
         })
     }
