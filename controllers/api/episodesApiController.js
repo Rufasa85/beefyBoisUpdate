@@ -26,9 +26,24 @@ router.post('/',(req,res)=>{
     }
 })
 
+router.post('/addHost',(req,res)=>{
+    if(!req.session.user){
+        res.redirect('/')
+    }
+    else{
+        db.Episode.findOne({where:{id:req.body.id}}).then(episode=>{  
+            let hostsToAdd = req.body.otherHostIds.split(',');
+            hostsToAdd.forEach(person=>{
+                episode.addHost(person)
+            })
+            res.json(episode);
+        })
+    }
+})
+
 router.get('/:id',(req,res)=>{
-    db.Review.findOne({where:{id:req.params.id}}).then(review=>{
-        res.send(review)
+    db.Episode.findOne({where:{id:req.params.id},include:[db.Host]}).then(Episode=>{
+        res.send(Episode)
     })
 })
 
