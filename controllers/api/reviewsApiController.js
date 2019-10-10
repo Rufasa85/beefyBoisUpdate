@@ -3,7 +3,7 @@ var router = express.Router();
 const db  = require('../../models');
 
 router.get('/',(req,res)=>{
-    db.Review.findAll({include:[db.Host]}).then(Reviews=>{
+    db.Review.findAll({include:[db.Host,db.Platform]}).then(Reviews=>{
         res.json(Reviews);
     })
 });
@@ -21,7 +21,12 @@ router.post('/',(req,res)=>{
           score:req.body.score,
           HostId:req.session.user.id 
         }).then(newReview=>{
+            let platforms = req.body.platforms.split(",");
+            platforms.forEach(platformId=>{
+                newReview.addPlatform(platformId)
+            })
             res.json(newReview)
+            
         })
     }
 })
