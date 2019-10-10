@@ -11,6 +11,7 @@ module.exports = function(sequelize, DataTypes) {
         // add associations here
         // ex:Review.hasMany(models.BlogPost);
         Review.belongsTo(models.Host)
+        Review.belongsToMany(models.Platform,{through:"ReviewPlatform"})
     };
 
     return Review;
