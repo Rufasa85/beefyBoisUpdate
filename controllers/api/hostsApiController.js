@@ -3,7 +3,7 @@ var router = express.Router();
 const db = require("../../models");
 
 router.get('/',(req,res)=>{
-    db.Host.findAll({include:[db.BlogPost]}).then(hosts=>{
+    db.Host.findAll({include:[db.BlogPost,db.Review,db.Episode]}).then(hosts=>{
         res.json(hosts);
     })
 })

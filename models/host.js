@@ -14,6 +14,7 @@ module.exports = function(sequelize, DataTypes) {
     //   // When an Host is deleted, also delete any associated Posts
       Host.hasMany(models.BlogPost);
       Host.hasMany(models.Review);
+      Host.belongsToMany(models.Episode,{through:"HostEpisode"});
     };
     
     Host.beforeCreate(function(host) {
