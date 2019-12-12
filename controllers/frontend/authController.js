@@ -1,10 +1,10 @@
 var express = require('express');
 var router = express.Router();
-const db = require('../models')
+const db = require('../../models')
 const bcrypt = require('bcrypt');
 
-router.get('/',(req,res)=>{
-    res.render('login');
+router.get('/login',(req,res)=>{
+    res.render('hosts/login');
 })
 
 router.post('/login',(req,res)=>{

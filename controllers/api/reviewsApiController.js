@@ -27,6 +27,8 @@ router.post('/',(req,res)=>{
             })
             res.json(newReview)
             
+        }).catch(err=>{
+            res.json(err)
         })
     }
 })
