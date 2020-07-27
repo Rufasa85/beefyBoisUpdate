@@ -1,5 +1,6 @@
 var express = require("express");
 var session = require("express-session");
+var SequelizeStore = require('connect-session-sequelize')(session.Store);
 
 // Sets up the Express App
 // =============================================================
@@ -21,7 +22,18 @@ var exphbs = require("express-handlebars");
 
 app.engine("handlebars", exphbs({ defaultLayout: "main" }));
 app.set("view engine", "handlebars");
-app.use(session({ secret: "keyboard cat", resave: true, saveUninitialized: true }));
+app.use(session(
+  { 
+    secret: "keyboard cat", 
+    store: new SequelizeStore({
+      db:db.sequelize
+    }),
+    resave: false, 
+    saveUninitialized: false,
+    cookie : {
+      maxAge:2*60*60*1000
+    }
+  }));
 
 
 app.use('/',allRoutes);
